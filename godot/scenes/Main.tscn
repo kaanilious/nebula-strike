@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/main.gd" id="1_main"]
+[ext_resource type="PackedScene" path="res://scenes/Ship.tscn" id="2_ship"]
+
+[node name="Main" type="Node3D"]
+script = ExtResource("1_main")
+
+[node name="World" type="Node3D" parent="."]
+
+[node name="Ship" parent="World" instance=ExtResource("2_ship")]
+
+[node name="Enemies" type="Node3D" parent="World"]
+
+[node name="Lasers" type="Node3D" parent="World"]
+
+[node name="Effects" type="Node3D" parent="World"]

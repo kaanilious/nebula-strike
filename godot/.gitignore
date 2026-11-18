@@ -1,0 +1,11 @@
+# Godot 4 editor cache and imports
+.godot/
+*.translation
+
+# Exported builds
+build/
+export/
+*.pck
+*.exe
+*.x86_64
+*.zip

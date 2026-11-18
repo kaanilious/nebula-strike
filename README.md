@@ -57,7 +57,49 @@ reduced resolution.
 
 ## Files
 
-- `index.html` — the whole game
+- `index.html` — the whole browser game
 - `vendor/three.min.js` — three.js r149, bundled so it works offline
 - `nebula-strike-2d.html` — the earlier 2D version, kept for reference
 - `src/haptics.js` — haptics used only inside the FreeMilk app
+
+## The Godot 4 version
+
+`godot/` is the same game as a real Godot 4 project, for exporting a Windows
+`.exe` instead of running in a browser.
+
+**Open it**
+
+1. Install **Godot 4.2 or newer** (the standard build, not .NET) from
+   <https://godotengine.org/download/windows/>. It is a single ~120 MB `.exe`,
+   no installer.
+2. Launch Godot, click **Import**, and pick `godot/project.godot`.
+3. Press **F5** to play.
+
+**Export a Windows .exe**
+
+1. In Godot, **Editor → Manage Export Templates → Download and Install**.
+2. **Project → Export → Add… → Windows Desktop**.
+3. Tick *Embed PCK* so you get one self-contained `.exe`, then **Export Project**.
+
+**How it is put together**
+
+Everything is procedural — no `.glb`, no textures, no audio files — so the whole
+project is text and diffs cleanly in git.
+
+- `scripts/main.gd` — game loop, wave director, laser pool, damage, camera
+- `scripts/ship.gd` — the interceptor, built from primitives in `_ready()`
+- `scripts/drone.gd` — enemy seek/strafe behaviour and firing
+- `scripts/asteroids.gd` — the belt, as three `MultiMesh`es
+- `scripts/particles.gd` — pooled GPU particles, one draw call
+- `scripts/laser.gd` — pooled bolts
+- `scripts/hud.gd` — score, hull, shields, banners
+- `scripts/sfx.gd` — synthesises every sound into an `AudioStreamWAV` at startup
+- `shaders/nebula_sky.gdshader` — procedural nebula sky
+- `shaders/billboard_glow.gdshader` — camera-facing quads for stars and particles
+
+Bloom, ACES tone mapping and the vignette come from Godot's `Environment`
+rather than being hand-written, so they are cheaper and better behaved than the
+web build's version. Shadows are on for the key light.
+
+**Controls** are the same as the browser build, plus **F1** for fullscreen.
+
