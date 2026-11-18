@@ -1,42 +1,63 @@
-# Nebula Strike
+# Nebula Strike 3D
 
-A small arcade space shooter. One HTML file, no build step, no dependencies.
+A 3D space-combat arcade game that runs in the browser. Fly an interceptor
+through an asteroid belt, break drone waves, and put down the dreadnought that
+arrives every fifth wave.
 
-## Play it
+No installer, no build step, no server. `index.html` and the `vendor/` folder
+are all it needs, and `vendor/three.min.js` ships with the download, so it runs
+completely offline.
 
-Open `index.html` in any modern browser (Chrome, Edge, Firefox, Safari).
+## Play on a PC
 
-**Controls**
+1. Unzip the folder.
+2. Double-click `index.html` (Chrome, Edge or Firefox).
+3. Click **LAUNCH**, then click once in the game window to capture the mouse.
 
-- Move: arrow keys or `A` / `D`, or move the mouse / drag a finger
-- Guns fire on their own
-- `P` or `Esc` pauses, `M` mutes
-- `Enter` or `Space` starts and restarts
+You can also just open the unzipped folder in a browser, or serve it with
+`python -m http.server` if your browser is strict about local files.
 
-Asteroids drift down toward your ship. Shoot them before they reach you or slip
-past the bottom edge — either one costs a life, and you have three. Rocks take
-one hit, darts are fast and fragile, and the big hexagonal tanks take three.
-Every 18 seconds the wave goes up and things get faster.
+## Controls
 
-## Getting it onto a PC
+- **Mouse** — steer (click the window once to capture it; `Esc` releases)
+- **W / S** — throttle up and down
+- **Shift** — afterburner (drains the boost bar)
+- **Q / E** — roll
+- **Arrow keys** — alternative steering
+- **P** or **Esc** — pause
+- **M** — mute, **B** — toggle bloom
+- **Enter** — start / restart
 
-The preview link (`...--preview.freemilk.app`) is **private on purpose**: only the
-person signed in to FreeMilk can open it, which is why a PC browser shows
-"This preview is private." Two ways around that:
+Guns fire automatically. Touch devices steer by dragging.
 
-1. **Go Live** (fastest, no download) — in the app, open the project's details
-   (the project icon, top left of the chat) and tap **Go Live**. The game then
-   sits at the site's own public link, e.g. `nebula-strike-4k1o.freemilk.app`,
-   and opens in any browser, on any device, for anyone.
-2. **Get the files** — push the repository to GitHub, then on the PC either
-   `git clone` it or use the green *Code* button → *Download ZIP* and unpack it.
-   Double-click `index.html`.
+## Rules
 
-`index.html` also works entirely on its own if you copy just that one file across
-(email, cloud storage, USB): it loads the haptics module only when it is running
-inside the FreeMilk app and otherwise starts without it. No build step, no server.
+- Hull at zero ends the run. Shields soak damage and recharge after four
+  seconds without being hit.
+- Asteroids respawn around you, so the belt never runs out. Big rocks take
+  three hits, medium two, small one.
+- Drones chase and shoot. The dreadnought on every fifth wave has 34 hit
+  points and fires three-round bursts.
+
+## Graphics and performance
+
+- Physically based materials with an image-based environment map, so metal
+  actually reflects the nebula.
+- Instanced asteroid field (102 rocks in 3 draw calls) and instanced lasers.
+- One-draw-call GPU particle system for engines, impacts and debris.
+- Procedural nebula sky and a distant planet with an atmospheric rim.
+- ACES tone mapping, custom bloom (bright pass + separable blur) and a vignette,
+  all hand-rolled on top of three.js.
+- Pixel ratio capped at 1.75, resolution auto-drops once if the frame budget is
+  blown, and **B** turns bloom off for a further speed win.
+
+The numbers are deliberately modest: an i7-8700K and a GTX 1080 Ti will hold a
+locked frame rate at 1440p with bloom on. A laptop iGPU will still run it at
+reduced resolution.
 
 ## Files
 
-- `index.html` — the whole game: markup, styles, canvas rendering and game loop
-- `src/haptics.js` — haptic effect definitions, used only inside the FreeMilk app
+- `index.html` — the whole game
+- `vendor/three.min.js` — three.js r149, bundled so it works offline
+- `nebula-strike-2d.html` — the earlier 2D version, kept for reference
+- `src/haptics.js` — haptics used only inside the FreeMilk app
